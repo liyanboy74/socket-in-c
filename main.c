@@ -21,14 +21,12 @@ int main(int argc , char *argv[])
         printf("Failed. Error Code : %d",WSAGetLastError());
         return 1;
     }
-
     printf("Initialised.\n");
 
     if((s=socket(AF_INET,SOCK_STREAM,0))==INVALID_SOCKET)
     {
         printf("Could not create socket : %d",WSAGetLastError());
     }
-
     printf("Socket created.\n");
 
     if(connect(s,(struct sockaddr *)&server,sizeof(server))<0)
@@ -36,9 +34,7 @@ int main(int argc , char *argv[])
         puts("connect error");
         return 1;
     }
-
     puts("Connected");
-
 
     if(send(s,message,strlen(message),0)<0)
     {
