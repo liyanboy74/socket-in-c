@@ -6,6 +6,8 @@ int main(int argc , char *argv[])
 	WSADATA wsa;
     SOCKET s;
 
+    struct sockaddr_in server;
+
 	printf("\nInitialising Winsock...");
 	if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
 	{
@@ -21,6 +23,18 @@ int main(int argc , char *argv[])
     }
 
     printf("Socket created.\n");
+
+    server.sin_addr.S_un.S_addr=inet_addr("192.168.40.1");
+    server.sin_family=AF_INET;
+    server.sin_port=htons(777);
+
+    if(connect(s,(struct sockaddr *)&server,sizeof(server))<0)
+    {
+        puts("connect error");
+        return 1;
+    }
+
+    puts("Connected");
 
 	return 0;
 }
