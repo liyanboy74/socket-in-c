@@ -5,8 +5,8 @@ int main(int argc , char *argv[])
 {
 	WSADATA wsa;
     SOCKET s;
-
     struct sockaddr_in server;
+    char *message;
 
 	printf("\nInitialising Winsock...");
 	if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
@@ -35,6 +35,15 @@ int main(int argc , char *argv[])
     }
 
     puts("Connected");
+
+    message="GET / HTTP/1.1\r\n\r\n";
+
+    if(send(s,message,strlen(message),0)<0)
+    {
+        puts("Send failed");
+        return 0;
+    }
+    puts("Data Send\n");
 
 	return 0;
 }
