@@ -8,15 +8,17 @@ int main(int argc , char *argv[])
     SOCKET s;
     struct sockaddr_in server;
     char *message,server_reply[2000];
-    int recv_size;
+    int recv_size,i;
+    struct hostent *he;
+    struct in_addr **addr_list;
+    char ip[20],temp[20],*fdatetime;
 
-    char *fdatetime,Temp[64];
-
+    char *hostname="worldtimeapi.org";
     message="GET /api/timezone/Asia/Tehran HTTP/1.1\r\n\r\n";
 
-    server.sin_addr.S_un.S_addr=inet_addr("213.188.196.246");
     server.sin_family=AF_INET;
     server.sin_port=htons(80);
+    //server.sin_addr.S_un.S_addr=inet_addr("213.188.196.246");
 
     //printf("\nInitialising Winsock...");
     if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
@@ -25,6 +27,22 @@ int main(int argc , char *argv[])
         return 1;
     }
     //printf("Initialised.\n");
+
+    if((he=gethostbyname(hostname))==NULL)
+    {
+        printf("gethostbyname failed : %d",WSAGetLastError());
+        return 1;
+    }
+
+	//Cast the h_addr_list to in_addr , since h_addr_list also has the ip address in long format only
+    addr_list=(struct in_addr **) he->h_addr_list;
+    for(i=0;addr_list[i]!=NULL;i++)
+    {
+        strcpy(ip,inet_ntoa(*addr_list[i]));
+    }
+    //printf("%s resolved to : %s\n" , hostname , ip);
+
+    server.sin_addr.S_un.S_addr=inet_addr(ip);
 
     if((s=socket(AF_INET,SOCK_STREAM,0))==INVALID_SOCKET)
     {
@@ -60,8 +78,9 @@ int main(int argc , char *argv[])
     fdatetime=strstr(server_reply,"\"datetime\":");
     if(fdatetime)
     {
-        strncpy(Temp,fdatetime+12,19);
-        puts(Temp);
+        strncpy(temp,fdatetime+12,19);
+        temp[19]='\0';
+        puts(temp);
     }
 
     closesocket(s);
