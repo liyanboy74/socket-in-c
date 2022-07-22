@@ -1,14 +1,18 @@
 #include <stdio.h>
+#include <winsock2.h>
 
-#ifdef __WIN32__
-# include <winsock2.h>
-#else
-# include <sys/socket.h>
-#endif
-
-
-int main()
+int main(int argc , char *argv[])
 {
-    printf("Hello!\n");
-    return 0;
+	WSADATA wsa;
+
+	printf("\nInitialising Winsock...");
+	if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
+	{
+		printf("Failed. Error Code : %d",WSAGetLastError());
+		return 1;
+	}
+
+	printf("Initialised.");
+
+	return 0;
 }

@@ -3,9 +3,11 @@ CC=gcc
 
 SRC= *.c
 
-default:clean campile run
+LINK= -lws2_32 #-lwsock32
+
+default:campile run
 campile:
-	$(CC) $(SRC) -o $(TARGET)
+	$(CC) $(SRC) $(LINK) -o $(TARGET)
 clean:
 	rm *.exe
 run:
