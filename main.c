@@ -23,14 +23,14 @@ int main(int argc , char *argv[])
     //printf("\nInitialising Winsock...");
     if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
     {
-        printf("Failed. Error Code : %d",WSAGetLastError());
+        printf("Failed. Error Code : %d\n",WSAGetLastError());
         return 1;
     }
     //printf("Initialised.\n");
 
     if((he=gethostbyname(hostname))==NULL)
     {
-        printf("gethostbyname failed : %d",WSAGetLastError());
+        printf("gethostbyname failed : %d\n",WSAGetLastError());
         return 1;
     }
 
@@ -46,7 +46,7 @@ int main(int argc , char *argv[])
 
     if((s=socket(AF_INET,SOCK_STREAM,0))==INVALID_SOCKET)
     {
-        printf("Could not create socket : %d",WSAGetLastError());
+        printf("Could not create socket : %d\n",WSAGetLastError());
     }
     //printf("Socket created.\n");
 
