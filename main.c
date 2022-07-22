@@ -3,20 +3,26 @@
 
 int main(int argc , char *argv[])
 {
-	WSADATA wsa;
+    WSADATA wsa;
     SOCKET s;
     struct sockaddr_in server;
     char *message,server_reply[2000];
     int recv_size;
 
-	printf("\nInitialising Winsock...");
-	if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
-	{
-		printf("Failed. Error Code : %d",WSAGetLastError());
-		return 1;
-	}
+    server.sin_addr.S_un.S_addr=inet_addr("213.188.196.246");
+    server.sin_family=AF_INET;
+    server.sin_port=htons(80);
 
-	printf("Initialised.\n");
+    message="GET /api/timezone/Asia/Tehran HTTP/1.1\r\n\r\n";
+
+    printf("\nInitialising Winsock...");
+    if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
+    {
+        printf("Failed. Error Code : %d",WSAGetLastError());
+        return 1;
+    }
+
+    printf("Initialised.\n");
 
     if((s=socket(AF_INET,SOCK_STREAM,0))==INVALID_SOCKET)
     {
@@ -24,10 +30,6 @@ int main(int argc , char *argv[])
     }
 
     printf("Socket created.\n");
-
-    server.sin_addr.S_un.S_addr=inet_addr("213.188.196.246");
-    server.sin_family=AF_INET;
-    server.sin_port=htons(80);
 
     if(connect(s,(struct sockaddr *)&server,sizeof(server))<0)
     {
@@ -37,7 +39,6 @@ int main(int argc , char *argv[])
 
     puts("Connected");
 
-    message="GET /api/timezone/Asia/Tehran HTTP/1.1\r\n\r\n";
 
     if(send(s,message,strlen(message),0)<0)
     {
@@ -54,8 +55,8 @@ int main(int argc , char *argv[])
     puts("Replay received");
 
     //Add a NULL terminating character to make it a proper string before printing
-	server_reply[recv_size] = '\0';
-	puts(server_reply);
+    server_reply[recv_size] = '\0';
+    puts(server_reply);
 
-	return 0;
+    return 0;
 }
