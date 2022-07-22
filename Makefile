@@ -1,4 +1,4 @@
-TARGET=test
+TARGET=time
 CC=gcc
 
 SRC= *.c
