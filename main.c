@@ -54,5 +54,8 @@ int main(int argc , char *argv[])
     server_reply[recv_size] = '\0';
     puts(server_reply);
 
+    closesocket(s);
+    WSACleanup();
+
     return 0;
 }
