@@ -24,9 +24,9 @@ int main(int argc , char *argv[])
 
     printf("Socket created.\n");
 
-    server.sin_addr.S_un.S_addr=inet_addr("192.168.40.1");
+    server.sin_addr.S_un.S_addr=inet_addr("142.250.179.110");
     server.sin_family=AF_INET;
-    server.sin_port=htons(777);
+    server.sin_port=htons(80);
 
     if(connect(s,(struct sockaddr *)&server,sizeof(server))<0)
     {
