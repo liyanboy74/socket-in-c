@@ -4,7 +4,7 @@
 
 int main(int argc , char *argv[])
 {
-	WSADATA wsa;
+    WSADATA wsa;
     SOCKET s;
     struct sockaddr_in server;
     char *message,server_reply[2000];
@@ -18,13 +18,13 @@ int main(int argc , char *argv[])
     server.sin_family=AF_INET;
     server.sin_port=htons(80);
 
-	//printf("\nInitialising Winsock...");
-	if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
-	{
-		printf("Failed. Error Code : %d",WSAGetLastError());
-		return 1;
-	}
-	//printf("Initialised.\n");
+    //printf("\nInitialising Winsock...");
+    if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
+    {
+        printf("Failed. Error Code : %d",WSAGetLastError());
+        return 1;
+    }
+    //printf("Initialised.\n");
 
     if((s=socket(AF_INET,SOCK_STREAM,0))==INVALID_SOCKET)
     {
@@ -54,8 +54,8 @@ int main(int argc , char *argv[])
     //puts("Replay received");
 
     //Add a NULL terminating character to make it a proper string before printing
-	server_reply[recv_size] = '\0';
-	//puts(server_reply);
+    server_reply[recv_size] = '\0';
+    //puts(server_reply);
 
     fdatetime=strstr(server_reply,"\"datetime\":");
     if(fdatetime)
@@ -64,5 +64,5 @@ int main(int argc , char *argv[])
         puts(Temp);
     }
 
-	return 0;
+    return 0;
 }
