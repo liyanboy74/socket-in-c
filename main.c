@@ -64,5 +64,8 @@ int main(int argc , char *argv[])
         puts(Temp);
     }
 
+    closesocket(s);
+    WSACleanup();
+
     return 0;
 }
