@@ -6,7 +6,8 @@ int main(int argc , char *argv[])
 	WSADATA wsa;
     SOCKET s;
     struct sockaddr_in server;
-    char *message;
+    char *message,server_reply[2000];
+    int recv_size;
 
 	printf("\nInitialising Winsock...");
 	if (WSAStartup(MAKEWORD(2,2),&wsa) != 0)
@@ -24,7 +25,7 @@ int main(int argc , char *argv[])
 
     printf("Socket created.\n");
 
-    server.sin_addr.S_un.S_addr=inet_addr("142.250.179.110");
+    server.sin_addr.S_un.S_addr=inet_addr("213.188.196.246");
     server.sin_family=AF_INET;
     server.sin_port=htons(80);
 
@@ -36,14 +37,25 @@ int main(int argc , char *argv[])
 
     puts("Connected");
 
-    message="GET / HTTP/1.1\r\n\r\n";
+    message="GET /api/timezone/Asia/Tehran HTTP/1.1\r\n\r\n";
 
     if(send(s,message,strlen(message),0)<0)
     {
         puts("Send failed");
         return 0;
     }
-    puts("Data Send\n");
+    puts("Data Send");
+
+    if((recv_size=recv(s,server_reply,2000,0))==SOCKET_ERROR)
+    {
+        puts("recv failed");
+        return 1;
+    }
+    puts("Replay received");
+
+    //Add a NULL terminating character to make it a proper string before printing
+	server_reply[recv_size] = '\0';
+	puts(server_reply);
 
 	return 0;
 }
