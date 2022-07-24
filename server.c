@@ -26,13 +26,13 @@ int s_main(int argc,char**argv)
 
     if(WSAStartup(MAKEWORD(2,2),&wsa)!=0)
     {
-        printf("WSA Error Code : %d\n",WSAGetLastError());
+        printf("WSA Error Code:%d\n",WSAGetLastError());
         return 1;
     }
 
     if((master=socket(AF_INET,SOCK_STREAM,0))==INVALID_SOCKET)
     {
-        printf("Socket Error Code : %d\n",WSAGetLastError());
+        printf("Socket Error Code:%d\n",WSAGetLastError());
         return 1;
     }
 
@@ -42,14 +42,14 @@ int s_main(int argc,char**argv)
 
     if(bind(master,(struct sockaddr *)&server,sizeof(server))==SOCKET_ERROR)
     {
-        printf("Bind Error Code : %d\n",WSAGetLastError());
+        printf("Bind Error Code:%d\n",WSAGetLastError());
         return 1;
     }
 
     listen(master,3);
 
 	//Accept and incoming connection
-	printf("Server running on localhost:%d\r\nWaiting for incoming connections...",PORT);
+	printf("Server running on localhost:%d\r\nWaiting for incoming connections...\n",PORT);
 
     addrlen=sizeof(struct sockaddr_in);
 
@@ -70,7 +70,7 @@ int s_main(int argc,char**argv)
 
         if(activity==SOCKET_ERROR)
         {
-            printf("select call failed with error code : %d\n" , WSAGetLastError());
+            printf("select call failed with error code:%d\n" , WSAGetLastError());
 			return 1;
         }
 
@@ -82,7 +82,7 @@ int s_main(int argc,char**argv)
                 return 1;
             }
 
-            printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+            printf("New connection - %s:%d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
 
             if( send(new_socket, message, strlen(message), 0) != strlen(message) )
             {
@@ -112,18 +112,20 @@ int s_main(int argc,char**argv)
                     int error_code=WSAGetLastError();
                     if(error_code==WSAECONNRESET)
                     {
-                        printf("Host disconnected unexpectedly , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
-                        closesocket(s);
-                        client_socket[i]=0;
+                        printf("Host disconnected unexpectedly - %s:%d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
                     }
                     else
                     {
-                        printf("recv failed with error code : %d\n" , error_code);
+                        printf("recv failed with error code:%d\n" , error_code);
                     }
+                    printf("Host disconnected - %s:%d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                    closesocket(s);
+                    client_socket[i]=0;
+                    continue;
                 }
                 if ( valread == 0)
                 {
-                    printf("Host disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                    printf("Host disconnected - %s:%d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
                     closesocket( s );
                     client_socket[i] = 0;
                 }
