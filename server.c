@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_CLIENTS 30
+#define MAX_CLIENTS 100000
 #define MAX_RECV    1024
 
 #define PORT        8888
@@ -13,7 +13,7 @@ int s_main(int argc,char**argv)
     WSADATA wsa;
     SOCKET master,new_socket,client_socket[MAX_CLIENTS],s;
     struct sockaddr_in server,address;
-    int max_clients=MAX_CLIENTS,activity,addrlen,varlen,valread,i;
+    int activity,addrlen,varlen,valread,max_clients=MAX_CLIENTS,i;
     char *message="ECHO Daemon v1.0 \r\n";
 
     fd_set readfds;
