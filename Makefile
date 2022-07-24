@@ -1,4 +1,4 @@
-TARGET=test
+TARGET=echo-server
 CC=gcc
 
 SRC= *.c

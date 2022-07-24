@@ -47,7 +47,7 @@ int s_main(int argc,char**argv)
     listen(master,3);
 
 	//Accept and incoming connection
-	puts("Waiting for incoming connections...");
+	puts("Server running on localhost:8888\r\nWaiting for incoming connections...");
 
     addrlen=sizeof(struct sockaddr_in);
 
