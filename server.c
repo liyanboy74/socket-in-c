@@ -6,6 +6,8 @@
 #define MAX_CLIENTS 30
 #define MAX_RECV    1024
 
+#define PORT        8888
+
 int s_main(int argc,char**argv)
 {
     WSADATA wsa;
@@ -36,7 +38,7 @@ int s_main(int argc,char**argv)
 
     server.sin_family=AF_INET;
     server.sin_addr.S_un.S_addr=INADDR_ANY;
-    server.sin_port=htons(8888);
+    server.sin_port=htons(PORT);
 
     if(bind(master,(struct sockaddr *)&server,sizeof(server))==SOCKET_ERROR)
     {
@@ -47,7 +49,7 @@ int s_main(int argc,char**argv)
     listen(master,3);
 
 	//Accept and incoming connection
-	puts("Server running on localhost:8888\r\nWaiting for incoming connections...");
+	printf("Server running on localhost:%d\r\nWaiting for incoming connections...",PORT);
 
     addrlen=sizeof(struct sockaddr_in);
 

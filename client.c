@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <winsock2.h>
 
+#define REPLAY_BUFFER_MAX_SIZE 2000
+
 int c_main(int argc , char *argv[])
 {
     WSADATA wsa;
     SOCKET s;
     struct sockaddr_in server;
-    char *message,server_reply[2000];
+    char *message,server_reply[REPLAY_BUFFER_MAX_SIZE];
     int recv_size,i;
     struct hostent *he;
     struct in_addr **addr_list;
@@ -63,7 +65,7 @@ int c_main(int argc , char *argv[])
     }
     puts("Data Send");
 
-    if((recv_size=recv(s,server_reply,2000,0))==SOCKET_ERROR)
+    if((recv_size=recv(s,server_reply,REPLAY_BUFFER_MAX_SIZE,0))==SOCKET_ERROR)
     {
         puts("recv failed");
         return 1;
