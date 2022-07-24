@@ -4,8 +4,9 @@
 int s_main(int argc,char**argv)
 {
     WSADATA wsa;
-    SOCKET s;
-    struct sockaddr_in server;
+    SOCKET s,new_socket;
+    struct sockaddr_in server,client;
+    int c;
 
     if(WSAStartup(MAKEWORD(2,2),&wsa)!=0)
     {
@@ -28,9 +29,23 @@ int s_main(int argc,char**argv)
         printf("Bind Error Code : %d\n",WSAGetLastError());
         return 1;
     }
-    printf("Bind OK!\n");
 
-    closesocket(s);
+    listen(s,3);
 
+	//Accept and incoming connection
+	puts("Waiting for incoming connections...");
+
+    c=sizeof(struct sockaddr_in);
+    new_socket=accept(s,(struct sockaddr*)&client,&c);
+    if(new_socket==SOCKET_ERROR)
+    {
+        printf("Accept Error Code : %d\n",WSAGetLastError());
+        return 1;
+    }
+
+    puts("Connection accepted");
+
+	closesocket(s);
+	WSACleanup();
     return 0;
 }
